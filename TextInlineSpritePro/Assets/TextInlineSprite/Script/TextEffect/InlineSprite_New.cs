@@ -14,20 +14,15 @@ public class inlineSprite_New : MaskableGraphic
     {
         get
         {
-            if (inlineSpriteAsset == null)
-            {
-                return s_WhiteTexture;
-            }
+            Texture tex = GetMainTextture();
 
-            if (inlineSpriteAsset.TextureSource == null)
+            if (tex == null)
             {
                 Debug.LogError("InlineSpriteGraphic: SpriteAsset.texSource is null");
                 return s_WhiteTexture;
             }
-            else
-            {
-                return TestImage.sprite.texture;
-            }
+
+            return tex;
         }
     }
 
@@ -36,30 +31,36 @@ public class inlineSprite_New : MaskableGraphic
         base.UpdateMaterial();
     }
 
-
-
     protected override void Awake()
     {
-        if (inlineSpriteAsset != null && inlineSpriteAsset.TextureSource != null)
-        {
-            return;
-        }
-
-        InlineTextManager.Instance.RebulidSpriteData();
-
-        inlineSpriteAsset = InlineTextManager.Instance.InlineSpriteAsset;
-
         UpdateMaterial();
 
-        transform.localPosition = new Vector3(1000,1000,1000);
+        transform.localPosition = new Vector3(10000,10000,1000);
 
         base.Awake();
+    }
+
+    public Texture GetMainTextture()
+    {
+        UIAtlas atlas = InlineSpriteAssetManager.Instance.GetAtlas(AtlasAssetPath);
+        if (atlas == null)
+        {
+            return null;
+        }
+
+        Sprite sprite = atlas.GetSprite(0);
+        if (sprite != null)
+        {
+            return sprite.texture;
+        }
+
+        return null;
     }
 
 
     public SpriteAssetInfo GetSpriteInfo(int index)
     {
-        return InlineSpriteAssetManager.Instance.GetSpriteInfo(index);
+        return InlineSpriteAssetManager.Instance.GetSpriteUvInfoByIndex(AtlasAssetPath, index);
     }
 
     public SpriteAssetInfo GetSpriteInfo(string name)
@@ -69,12 +70,12 @@ public class inlineSprite_New : MaskableGraphic
 
     public List<SpriteAssetInfo> GetSpriteInfosFromPrefix(string namePrefix)
     {
-        return InlineSpriteAssetManager.Instance.GetSpriteInfosFromPrefix(namePrefix);
+        return InlineSpriteAssetManager.Instance.GetSpriteInfosFromPrefix(AtlasAssetPath, namePrefix);
     }
 
     public List<string> GetSpriteNamesFromPrefix(string namePrefix)
     {
-        return InlineSpriteAssetManager.Instance.GetSpriteNamesFromPrefix(namePrefix);
+        return InlineSpriteAssetManager.Instance.GetSpriteNamesFromPrefix(AtlasAssetPath, namePrefix);
     }
 
 

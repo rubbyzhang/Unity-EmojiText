@@ -8,8 +8,8 @@ using UnityEngine.Sprites ;
 
 public class AtlasTest : MonoBehaviour
 {
-    public Sprite image1;
-    public Sprite image2;
+
+    public Image image1;
     public Image image3;
 
 
@@ -19,13 +19,19 @@ public class AtlasTest : MonoBehaviour
         //        PrintImageInfo(image2);
 
         image3.sprite = AtlasManager.Instance.GetSprite("ui/atlas/common/scope");
+        image1.sprite = AtlasManager.Instance.GetSprite("ui/atlas/common/smoke");
 
-        PrintImageInfo(image3.sprite);
+    //    PrintImageInfo(image3.sprite);
 
         Vector4 outer = DataUtility.GetOuterUV(image3.overrideSprite);
         Vector4 inter = DataUtility.GetInnerUV(image3.overrideSprite);
         Debug.Log("_____________________outer:" + outer);
         Debug.Log("_____________________inter:" + inter);
+
+        Vector4 outer1 = DataUtility.GetOuterUV(image1.overrideSprite);
+        Vector4 inter1 = DataUtility.GetInnerUV(image1.overrideSprite);
+        Debug.Log("_____________________image1 outer:" + outer1);
+        Debug.Log("_____________________image1 inter:" + inter1);
 
         Debug.Log("____________________" + image3.mainTexture.name);
     }

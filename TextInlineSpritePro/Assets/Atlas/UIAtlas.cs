@@ -86,6 +86,11 @@ namespace Celf
             }
             return sprites[index];
         }
+
+        public List<Sprite> GetSpriteList()
+        {
+            return sprites;
+        } 
     }
 
 }

@@ -2,8 +2,8 @@
 using UnityEngine;
 using System.Collections;
 using Celf;
-using  System.Collections.Generic; 
-
+using  System.Collections.Generic;
+using UnityEngine.Sprites;
 
 /// <summary>
 /// 管理表情資源列表數據
@@ -44,40 +44,70 @@ public class InlineSpriteAssetManager : Singleton<InlineSpriteAssetManager>
         mAtlaseMap.Add(assetPath,atlas);
 
 
-        Dictionary<string, SpriteAssetInfo> uvs = GetSpriteUVInfo(atlas);
+        Dictionary<string, SpriteAssetInfo> uvs = GetSpriteUVInfoMap(atlas);
         mSpriteUVMap.Add(assetPath, uvs);
 
         return atlas;
     }
-
-    public Dictionary<string, SpriteAssetInfo> GetSpriteUVInfo(string assetPath)
-    {
-        UIAtlas atlas = GetAtlas(assetPath);
-        if (atlas == null)
-        {
-            return null;
-        }
-    }
-
-    private Dictionary<string, SpriteAssetInfo> GetSpriteUVInfo(UIAtlas atlas)
+    
+    private Dictionary<string, SpriteAssetInfo> GetSpriteUVInfoMap(UIAtlas atlas)
     {
         if (atlas == null)
         {
             return null;
         }
 
-        return null;
+        Dictionary<string, SpriteAssetInfo> assetInfoMap = new Dictionary<string, SpriteAssetInfo>();
+        List<Sprite> sprites = atlas.GetSpriteList();
+        foreach (Sprite sprite in sprites)
+        {
+            SpriteAssetInfo assetInfo = GetUv(sprite);
+            assetInfoMap.Add(sprite.name, assetInfo);
+        }
+
+        return assetInfoMap;
     }
 
 
-    public List<string> GetSpriteNamesFromPrefix(string namePrefix)
+    public List<string> GetSpriteNamesFromPrefix(string atlasAssetPath, string namePrefix)
     {
-        return null;
+        List<SpriteAssetInfo> temp = GetSpriteInfosFromPrefix(atlasAssetPath, namePrefix);
+        if (temp == null)
+        {
+            return null;
+        }
+
+        List<string> strs = new List<string>();
+        for (int i = 0; i < temp.Count; ++i)
+        {
+            strs.Add(temp[i].name);
+        }
+
+        return strs;
     }
 
-    public List<SpriteAssetInfo> GetSpriteInfosFromPrefix(string namePrefix)
+    public List<SpriteAssetInfo> GetSpriteInfosFromPrefix(string atlasAssetPath, string namePrefix)
     {
-        return null;
+        int MaxCount = 16;
+
+        List<string> names = new List<string>();
+        for (int i = 0; i < MaxCount; ++i)
+        {
+            names.Add(namePrefix + "_" + i.ToString());
+        }
+
+        List<SpriteAssetInfo> sprites = new List<SpriteAssetInfo>();
+
+        for (int i = 0; i < MaxCount; ++i)
+        {
+            SpriteAssetInfo t = GetSpriteUVInfo(atlasAssetPath, names[i]);
+            if (t != null)
+            {
+                sprites.Add(t);
+            }
+        }
+
+        return sprites;
     }
 
     public SpriteAssetInfo GetSpriteUVInfo(string atlasAssetPath, string spriteName)
@@ -92,7 +122,7 @@ public class InlineSpriteAssetManager : Singleton<InlineSpriteAssetManager>
         return uvs[spriteName];
     }
 
-    public SpriteAssetInfo GetSpriteUvInfo(string atlasAssetPath, int index)
+    public SpriteAssetInfo GetSpriteUvInfoByIndex(string atlasAssetPath, int index)
     {
         if (false == mAtlaseMap.ContainsKey(atlasAssetPath))
         {
@@ -106,6 +136,26 @@ public class InlineSpriteAssetManager : Singleton<InlineSpriteAssetManager>
 
     private SpriteAssetInfo GetUv(Sprite sprite)
     {
-        return null;
+        if (sprite == null)
+        {
+            return null;
+        }
+
+        SpriteAssetInfo assetInfo = new SpriteAssetInfo();
+        Vector4 outer = DataUtility.GetOuterUV(sprite);
+        assetInfo.name = sprite.name;
+        assetInfo.rect = GetUvRect(sprite);
+        return assetInfo;
+    }
+
+    private Rect GetUvRect(Sprite sprite)
+    {
+        Vector4 outer = DataUtility.GetOuterUV(sprite);
+        Rect rect = new Rect();
+        rect.x = outer.x;
+        rect.y = outer.y;
+        rect.width = outer.z - outer.x;
+        rect.height = outer.w - outer.y;
+        return rect;
     }
 }

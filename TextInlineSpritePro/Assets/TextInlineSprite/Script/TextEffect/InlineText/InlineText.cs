@@ -37,7 +37,7 @@ public class InlineText : Text, IPointerClickHandler
         set { m_onHrefClick = value; }
     }
 
-    private InlineSprite mInlineSprite;
+    private inlineSprite_New mInlineSprite;
     private List<SpriteTagInfo> mAnimSpiteTagList;
 
     private string mParseOutputText;
@@ -77,7 +77,7 @@ public class InlineText : Text, IPointerClickHandler
 
         if (mSpriteManager != null)
         {
-            mInlineSprite = mSpriteManager.GetComponent<InlineSprite>();
+            mInlineSprite = mSpriteManager.GetComponent<inlineSprite_New>();
             mInlineSprite.SetAllDirty();
 
             ParseText();

@@ -68,7 +68,7 @@ public class SpriteAnimInfo
 /// 表情渲染管理器，定时更新表情数据并绘制
 /// </summary>
 [ExecuteInEditMode]
-[RequireComponent(typeof(InlineSprite))]
+[RequireComponent(typeof(inlineSprite_New))]
 public class InlineSpriteManager : MonoBehaviour
 {
     /// <summary>
@@ -391,7 +391,7 @@ public class InlineSpriteManager : MonoBehaviour
         newSpriteMesh.uv = mTempUv;
         newSpriteMesh.triangles = mTempTriangles;
         GetComponent<CanvasRenderer>().SetMesh(newSpriteMesh);
-        GetComponent<InlineSprite>().UpdateMaterial();
+        GetComponent<inlineSprite_New>().UpdateMaterial();
 
         UnityEngine.Profiling.Profiler.EndSample();
     }
