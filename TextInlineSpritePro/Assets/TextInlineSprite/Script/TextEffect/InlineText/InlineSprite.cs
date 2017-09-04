@@ -7,8 +7,10 @@ using UnityEngine.UI;
 /// </summary>
 public class InlineSprite : MaskableGraphic
 {
-    [HideInInspector]
+//    [HideInInspector]
     public InlineSpriteAsset inlineSpriteAsset;
+
+    public Image TestImage;
 
     public override Texture mainTexture
     {
@@ -26,7 +28,7 @@ public class InlineSprite : MaskableGraphic
             }
             else
             {
-                return inlineSpriteAsset.TextureSource;
+                return TestImage.sprite.texture;
             }
         }
     }

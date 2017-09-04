@@ -25,14 +25,14 @@ public class EmojiSelectionPanel : MonoBehaviour
 
     void Awake()
     {
-        scrollview = transform.FindChild("ScrollView").GetComponent<ScrollRect>();
+        scrollview = transform.Find("ScrollView").GetComponent<ScrollRect>();
         if (scrollview == null)
         {
             Debug.Log("_____________________________scrollview is miss");
             return;
         }
 
-        BgBtn = transform.FindChild("BackGround").GetComponent<Button>();
+        BgBtn = transform.Find("BackGround").GetComponent<Button>();
         BgBtn.onClick.AddListener(onBgClick);
 
     }

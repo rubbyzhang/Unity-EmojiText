@@ -37,10 +37,31 @@ public static class CreateSpriteAsset
 
             AssetDatabase.CreateAsset(inlineSpriteAsset, TargetPath + fileNameWithoutExtension + ".asset");
         }
+
+        CheckSprite(sourceTex);
+
         Debug.Log("_______________________________File:" + fileNameWithoutExtension + "Gerenated sucess");
     }
 
-    public static List<SpriteAssetInfo> GetSpritesInfor(Texture2D tex)
+    private static void CheckSprite(Texture2D tex)
+    {
+        string filePath = UnityEditor.AssetDatabase.GetAssetPath(tex);
+
+        Object[] objects = UnityEditor.AssetDatabase.LoadAllAssetsAtPath(filePath);
+
+        Vector2 newTexSize = new Vector2(tex.width, tex.height);
+
+        for (int i = 0; i < objects.Length; i++)
+        {
+            if (objects[i] is Sprite)
+            {
+
+            }
+        }
+    }
+
+    public static
+        List<SpriteAssetInfo> GetSpritesInfor(Texture2D tex)
     {
         List<SpriteAssetInfo> m_sprites = new List<SpriteAssetInfo>();
 

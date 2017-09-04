@@ -183,7 +183,7 @@ public class InlineSpriteManager : MonoBehaviour
 
     public void UpdateSpriteAnimInfos(InlineText inlineText, List<SpriteAnimInfo> inputSpriteAnimInfos)
     {
-		Profiler.BeginSample("inlineSpriteManager UpdateSpriteAnimInfos ");
+		UnityEngine.Profiling.Profiler.BeginSample("inlineSpriteManager UpdateSpriteAnimInfos ");
 
         if ( inlineText == null)
         {
@@ -260,7 +260,7 @@ public class InlineSpriteManager : MonoBehaviour
         }
 
 
-		Profiler.EndSample ();
+		UnityEngine.Profiling.Profiler.EndSample ();
     }
 
     public void UpdatePositon(InlineText inlineText, List<SpriteAnimInfo> inputSpriteAnimInfos)
@@ -303,7 +303,7 @@ public class InlineSpriteManager : MonoBehaviour
     //TODO 分配策略 在文本修改比较多的情况下 分配国语频繁
     void UpdateMeshCapacity()
     {
-		Profiler.BeginSample("inlineSpriteManager UpdateMeshCapacity ");
+		UnityEngine.Profiling.Profiler.BeginSample("inlineSpriteManager UpdateMeshCapacity ");
 
         if (mTotalSpriteAnimDic == null || mTotalSpriteAnimDic.Count == 0)
         {
@@ -333,12 +333,12 @@ public class InlineSpriteManager : MonoBehaviour
             mTempTriangles = new int[needTrianglesCount];
         }
 
-        Profiler.EndSample ();
+        UnityEngine.Profiling.Profiler.EndSample ();
     }
     
     public void DrawSprite()
     {
-        Profiler.BeginSample("inline SpriteManager DrawSprite");
+        UnityEngine.Profiling.Profiler.BeginSample("inline SpriteManager DrawSprite");
 
         if (mTotalSpriteAnimDic.Count == 0)
         {
@@ -377,14 +377,14 @@ public class InlineSpriteManager : MonoBehaviour
             index++;
         }
         
-		Profiler.EndSample ();
+		UnityEngine.Profiling.Profiler.EndSample ();
 
         UpdateMesh();
     }
 
     private void UpdateMesh()
     {
-        Profiler.BeginSample("inline SpriteManager DrawSprite UpdateMesh");
+        UnityEngine.Profiling.Profiler.BeginSample("inline SpriteManager DrawSprite UpdateMesh");
 
         Mesh newSpriteMesh = new Mesh();
         newSpriteMesh.vertices = mTempVertices;
@@ -393,6 +393,6 @@ public class InlineSpriteManager : MonoBehaviour
         GetComponent<CanvasRenderer>().SetMesh(newSpriteMesh);
         GetComponent<InlineSprite>().UpdateMaterial();
 
-        Profiler.EndSample();
+        UnityEngine.Profiling.Profiler.EndSample();
     }
 }

@@ -25,9 +25,9 @@ public class ChatPanel : MonoBehaviour
        // mEmojiSelectionPanel.CallBack = OnEmojiSelected;
 
 
-        mInputField = transform.FindChild("Input/InputField").GetComponent<InputField>();
+        mInputField = transform.Find("Input/InputField").GetComponent<InputField>();
 
-        mEmojiButton = transform.FindChild("Input/Emoji").GetComponent<Button>();
+        mEmojiButton = transform.Find("Input/Emoji").GetComponent<Button>();
         if (null == mEmojiButton)
         {
             Debug.LogError("____________________ mEmojiButton is miss");
@@ -35,7 +35,7 @@ public class ChatPanel : MonoBehaviour
         
         mEmojiButton.onClick.AddListener(OnEmojiSelected);
 
-        mSendButton = transform.FindChild("Input/Send").GetComponent<Button>();
+        mSendButton = transform.Find("Input/Send").GetComponent<Button>();
         mSendButton.onClick.AddListener(OnSendMessage);
 
         mInputStringBuilder = new StringBuilder();

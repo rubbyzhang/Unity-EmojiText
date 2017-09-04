@@ -21,7 +21,7 @@ public class InlineText : Text, IPointerClickHandler
     }
 
     /// <summary>
-    /// 可通过外部设置避免查找
+    /// 可通过外部设置避免查找 todo
     /// </summary>
     private InlineSpriteManager mSpriteManager;
     public InlineSpriteManager SpriteManager
@@ -177,31 +177,40 @@ public class InlineText : Text, IPointerClickHandler
 
     private void ParseText()
     {
-        Profiler.BeginSample("InlineText ParseText");
+        UnityEngine.Profiling.Profiler.BeginSample("InlineText ParseText");
 
         mParseOutputText = text;
-
+        
+//        Debug.Log("1:" + mParseOutputText);
         if (mParseOutputText.IndexOf('[') >= 0 && mParseOutputText.IndexOf(']') > 0)
         {
             mParseOutputText = ReplaceSimpleSpriteTags(mParseOutputText);
         }
 
+//        Debug.Log("2:" + mParseOutputText);
+
         mParseOutputText = ParseUnderlineTag(mParseOutputText);
+
+//        Debug.Log("3:" + mParseOutputText);
+
 
         mParseOutputText = ParseHrefTags(mParseOutputText);
 
+//        Debug.Log("4:" + mParseOutputText);
+
         ParseSpriteTags(mParseOutputText);
+
 
         ResetSpriteInfoList();
 
-        Profiler.EndSample();
+        UnityEngine.Profiling.Profiler.EndSample();
     }
 
     //计算在顶点中起始和结束位置，考虑<u></u>的影响，其他标签暂且不考虑
     //归根到底是计算文字在顶点数据中位置方式不太靠谱
     protected string ParseHrefTags(string strText)
     {
-        Profiler.BeginSample("InlineText Parse ParseUnderlineTag");
+        UnityEngine.Profiling.Profiler.BeginSample("InlineText Parse ParseUnderlineTag");
 
         mTextBuilder.Length = 0;
 
@@ -247,14 +256,14 @@ public class InlineText : Text, IPointerClickHandler
             }
         }
 
-        Profiler.EndSample();
+        UnityEngine.Profiling.Profiler.EndSample();
 
         return mTextBuilder.ToString();
     }
 
     protected string ParseUnderlineTag(string strText)
     {
-        Profiler.BeginSample("InlineText Parse ParseUnderlineTag");
+        UnityEngine.Profiling.Profiler.BeginSample("InlineText Parse ParseUnderlineTag");
 
         mTextBuilder.Length = 0;
 
@@ -300,14 +309,14 @@ public class InlineText : Text, IPointerClickHandler
         
         mTextBuilder.Append(strText.Substring(indexText, strText.Length - indexText));
 
-        Profiler.EndSample();
+        UnityEngine.Profiling.Profiler.EndSample();
 
         return mTextBuilder.ToString();
     }
 
     private string ReplaceSimpleSpriteTags(string strText)
     {
-        Profiler.BeginSample("InlineText Parse ReplaceSimpleSpriteTags");
+        UnityEngine.Profiling.Profiler.BeginSample("InlineText Parse ReplaceSimpleSpriteTags");
 
         mTextBuilder.Length = 0;
         var indexText = 0;
@@ -319,7 +328,7 @@ public class InlineText : Text, IPointerClickHandler
             indexText = match.Index + match.Length;
         }
         mTextBuilder.Append(strText.Substring(indexText, strText.Length - indexText));
-        Profiler.EndSample();
+        UnityEngine.Profiling.Profiler.EndSample();
         return mTextBuilder.ToString();
     }
 
@@ -360,6 +369,7 @@ public class InlineText : Text, IPointerClickHandler
                 tempArrayTag.Key = GenerateKey(match.Groups[1].Value, index);
                 tempArrayTag.Names = names;
                 tempArrayTag.VertextIndex = match.Index;
+
                 float size = float.Parse(match.Groups[2].Value);
 
                 float width = float.Parse(match.Groups[3].Value);
@@ -372,6 +382,7 @@ public class InlineText : Text, IPointerClickHandler
                 tempArrayTag.Size   = new Vector2(size, size);
                 tempArrayTag.Offset = offset;
 
+                Debug.Log("_________________________name：" + match.Groups[1].Value + ", index :" + match.Index);
                 index ++;
             }
         }
@@ -451,13 +462,14 @@ public class InlineText : Text, IPointerClickHandler
     readonly UIVertex[] m_TempVerts = new UIVertex[4];
     private VertexHelper mVertexHelperRef;
     private TextGenerationSettings TextGenerationSettings;
+
     protected override void OnPopulateMesh(VertexHelper toFill)
     {
-		Profiler.BeginSample("inlineText OnPopulateMesh");
+		UnityEngine.Profiling.Profiler.BeginSample("inlineText OnPopulateMesh");
 
         DebugLog("Text OnPopulateMesh");
 
-        Profiler.BeginSample("inlineText OnPopulateMesh Data");
+        UnityEngine.Profiling.Profiler.BeginSample("inlineText OnPopulateMesh Data");
         if (font == null)
         {
             return;
@@ -524,21 +536,21 @@ public class InlineText : Text, IPointerClickHandler
         }
         m_DisableFontTextureRebuiltCallback = false;
         mVertexHelperRef = toFill;
-        Profiler.EndSample();
+        UnityEngine.Profiling.Profiler.EndSample();
 
-        Profiler.BeginSample("inlineText HerfTagHandler ");
+        UnityEngine.Profiling.Profiler.BeginSample("inlineText HerfTagHandler ");
         HerfTagHandler();
-        Profiler.EndSample();
+        UnityEngine.Profiling.Profiler.EndSample();
 
-        Profiler.BeginSample("inlineText UnderlineTagsHandler ");
+        UnityEngine.Profiling.Profiler.BeginSample("inlineText UnderlineTagsHandler ");
         UnderlineTagsHandler();
-		Profiler.EndSample ();
+		UnityEngine.Profiling.Profiler.EndSample ();
 
-		Profiler.BeginSample("inlineText SpriteTagHandler ");
+		UnityEngine.Profiling.Profiler.BeginSample("inlineText SpriteTagHandler ");
         SpriteTagHandler();
-		Profiler.EndSample ();
+		UnityEngine.Profiling.Profiler.EndSample ();
 
-		Profiler.EndSample ();
+		UnityEngine.Profiling.Profiler.EndSample ();
     }
 
     #endregion
@@ -574,7 +586,7 @@ public class InlineText : Text, IPointerClickHandler
             mSpriteVertPositionList = new List<UIVertex>();
         }
 
-        Profiler.BeginSample("inlineText SpriteTagHandler Position");
+        UnityEngine.Profiling.Profiler.BeginSample("inlineText SpriteTagHandler Position");
 
         for (int i = 0; i < mAnimSpiteTagList.Count; i++)
         {
@@ -603,7 +615,7 @@ public class InlineText : Text, IPointerClickHandler
             mVertexHelperRef.PopulateUIVertex(ref tempVer, vertexIndex);
             mSpriteVertPositionList[i] = tempVer;
         }
-        Profiler.EndSample();
+        UnityEngine.Profiling.Profiler.EndSample();
 
         CalcQuadTag(mSpriteVertPositionList);
 
@@ -620,7 +632,7 @@ public class InlineText : Text, IPointerClickHandler
     /// <param name="onlyUpdatePositon">是否只更新位置</param>
     void CalcQuadTag(List<UIVertex> spriteVerters , bool onlyUpdatePositon = false)
     {
-        Profiler.BeginSample("inlineText SpriteTagHandler CalcQuadTag");
+        UnityEngine.Profiling.Profiler.BeginSample("inlineText SpriteTagHandler CalcQuadTag");
 
         if (mAnimSpriteInfoList == null || mAnimSpriteInfoList.Count == 0)
         {
@@ -639,9 +651,10 @@ public class InlineText : Text, IPointerClickHandler
 
         //canvas scale 
         Vector3 relativePostion = Vector3.zero;
-        if (mSpriteManager != null)
+        if (mInlineSprite != null)
         {
-            relativePostion = transform.position - mSpriteManager.transform.position;
+            //todo
+            relativePostion = transform.position - mInlineSprite.transform.position;
             if (canvas != null)
             {
                 Vector3 scale = canvas.transform.localScale;
@@ -649,7 +662,7 @@ public class InlineText : Text, IPointerClickHandler
             }
         }
 
-        Profiler.BeginSample("inlineText CalcQuadTag Cal");
+        UnityEngine.Profiling.Profiler.BeginSample("inlineText CalcQuadTag Cal");
 
         for (int i = 0; i < mAnimSpiteTagList.Count; i++)
         {
@@ -669,7 +682,9 @@ public class InlineText : Text, IPointerClickHandler
                 //Debug.LogWarning("SpriteAnim Position is less");
                 continue;
             }
-            Vector3 textpos = relativePostion + spriteVerters[i].position;
+            Debug.Log("_____________________relativePostion:" + relativePostion);
+            Vector3 textpos =  spriteVerters[i].position;
+            Debug.Log("_____________________textpos:" + textpos);
 
             float xOffset = tempTagInfo.Offset * tempTagInfo.Size.x;
 
@@ -686,6 +701,8 @@ public class InlineText : Text, IPointerClickHandler
             for (int j = 0; j < tempTagInfo.Names.Count; j++)
             {
                 Rect newSpriteRect ;
+
+                //todo
                 SpriteAssetInfo tempSpriteAsset = mInlineSprite.GetSpriteInfo(tempTagInfo.Names[j]);
                 if (tempSpriteAsset != null)
                 {
@@ -700,9 +717,9 @@ public class InlineText : Text, IPointerClickHandler
             }
         }
 
-        Profiler.EndSample();
+        UnityEngine.Profiling.Profiler.EndSample();
 
-        Profiler.EndSample();
+        UnityEngine.Profiling.Profiler.EndSample();
     }
 
     //UGUIText不支持<quad/>标签，表现为乱码, 将uv全设置为0
@@ -713,7 +730,7 @@ public class InlineText : Text, IPointerClickHandler
             return;
         }
 
-        Profiler.BeginSample("inlineText Cal ClearQuadUv");
+        UnityEngine.Profiling.Profiler.BeginSample("inlineText Cal ClearQuadUv");
 
         UIVertex tempVertex;
 
@@ -740,7 +757,7 @@ public class InlineText : Text, IPointerClickHandler
                 verts[m] = tempVertex;
             }
         }
-        Profiler.EndSample();
+        UnityEngine.Profiling.Profiler.EndSample();
     }
     #endregion
 

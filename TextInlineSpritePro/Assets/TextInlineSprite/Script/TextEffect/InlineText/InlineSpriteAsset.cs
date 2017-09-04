@@ -8,7 +8,7 @@ public class SpriteAssetInfo
     public string name;
     public Rect rect;
 }
-
+    
 /// <summary>
 /// 表情图片序列化信息
 /// </summary>
