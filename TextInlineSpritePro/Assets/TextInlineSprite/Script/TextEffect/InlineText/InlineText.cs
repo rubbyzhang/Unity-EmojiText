@@ -167,7 +167,7 @@ public class InlineText : Text, IPointerClickHandler
         //处理编辑下文本修改问题，默认TextEditor会绕开override的text实现
         ParseText();
 #endif
-        DebugLog("Text SetVerticesDirty");
+        DebugLog("____________________________Text SetVerticesDirty");
         base.SetVerticesDirty();
     }
     
@@ -181,7 +181,7 @@ public class InlineText : Text, IPointerClickHandler
 
         mParseOutputText = text;
         
-//        Debug.Log("1:" + mParseOutputText);
+        Debug.Log("1:" + mParseOutputText);
         if (mParseOutputText.IndexOf('[') >= 0 && mParseOutputText.IndexOf(']') > 0)
         {
             mParseOutputText = ReplaceSimpleSpriteTags(mParseOutputText);
@@ -357,6 +357,10 @@ public class InlineText : Text, IPointerClickHandler
         foreach (Match match in mConstSpriteTagRegex.Matches(strText))
         {
             List<string> names = mInlineSprite.GetSpriteNamesFromPrefix(match.Groups[1].Value);
+
+            Debug.Log("____________________________prefix:" + match.Groups[1].Value);
+            Debug.Log("____________________________prefix names:" + names.Count);
+
             if (names != null && names.Count > 0)
             {
                 if (index + 1 > mAnimSpiteTagList.Count)
@@ -445,7 +449,7 @@ public class InlineText : Text, IPointerClickHandler
     #endregion
 
     #region update
-    void LateUpdate()
+    void Update()
     {
         if (mSpriteManager == null)
         {
@@ -683,7 +687,7 @@ public class InlineText : Text, IPointerClickHandler
                 continue;
             }
             Debug.Log("_____________________relativePostion:" + relativePostion);
-            Vector3 textpos =  spriteVerters[i].position;
+            Vector3 textpos = relativePostion +  spriteVerters[i].position;
             Debug.Log("_____________________textpos:" + textpos);
 
             float xOffset = tempTagInfo.Offset * tempTagInfo.Size.x;
@@ -922,91 +926,9 @@ public class InlineText : Text, IPointerClickHandler
     }
     #endregion
 
-    #region define
-    [System.Serializable]
-    public class SpriteTagInfo
-    {
-        public string Key;
-        public List<string> Names; 
-        public int VertextIndex;
-        public Vector2 Size;
-        public float Offset;
-
-
-        public void Reset()
-        {
-            Key = "";
-        }
-
-        public SpriteTagInfo()
-        {
-            Names = new List<string>();
-        }
-
-        public bool IsValid()
-        {
-            return !string.IsNullOrEmpty(Key);
-        }
-    }
-
-    /// <summary>
-    /// 超链接信息类
-    /// </summary>
-    private class HrefTagInfo
-    {
-        public int StartIndex;
-
-        public int EndIndex;
-
-        public string Name;
-
-        public void Reset()
-        {
-            StartIndex = -1;
-            EndIndex = -1;
-        }
-
-        public bool IsValid()
-        {
-            return StartIndex != -1 && EndIndex != -1;
-        }
-
-        public  List<Rect> Boxes = new List<Rect>();
-    }
-
-    private class UnderlineTagInfo
-    {
-        public int StartIndex;
-
-        public int EndIndex;
-
-        public  List<Rect> Boxes = new List<Rect>();
-
-        public  UnderlineTagInfo()
-        {
-            Reset();
-        }
-
-        public void Reset()
-        {
-            StartIndex = -1;
-            EndIndex = -1;
-        }
-
-        public bool IsValid()
-        {
-            return StartIndex != -1 && EndIndex != -1;
-        }
-    }
-
-    [System.Serializable]
-    public class HrefClickEvent : UnityEvent<string> { }
-
-    #endregion
-
     void DebugLog(string str)
     {
-       // Debug.Log("_______________________" + str);
+        Debug.Log("_______________________" + str);
     }
 }
 

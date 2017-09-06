@@ -376,22 +376,24 @@ public class InlineSpriteManager : MonoBehaviour
 
             index++;
         }
-        
-		UnityEngine.Profiling.Profiler.EndSample ();
 
         UpdateMesh();
+
+
+        UnityEngine.Profiling.Profiler.EndSample ();
     }
 
     private void UpdateMesh()
     {
         UnityEngine.Profiling.Profiler.BeginSample("inline SpriteManager DrawSprite UpdateMesh");
 
-        Mesh newSpriteMesh = new Mesh();
-        newSpriteMesh.vertices = mTempVertices;
-        newSpriteMesh.uv = mTempUv;
-        newSpriteMesh.triangles = mTempTriangles;
-        GetComponent<CanvasRenderer>().SetMesh(newSpriteMesh);
-        GetComponent<inlineSprite_New>().UpdateMaterial();
+//        Mesh newSpriteMesh = new Mesh();
+//        newSpriteMesh.vertices = mTempVertices;
+//        newSpriteMesh.uv = mTempUv;
+//        newSpriteMesh.triangles = mTempTriangles;
+//        GetComponent<CanvasRenderer>().SetMesh(newSpriteMesh);
+//        GetComponent<inlineSprite_New>().UpdateMaterial();
+        GetComponent<inlineSprite_New>().UpdateMesh(mTempVertices, mTempUv, mTempTriangles);
 
         UnityEngine.Profiling.Profiler.EndSample();
     }

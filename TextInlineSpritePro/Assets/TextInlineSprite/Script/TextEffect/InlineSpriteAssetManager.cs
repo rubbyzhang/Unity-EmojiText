@@ -11,9 +11,11 @@ using UnityEngine.Sprites;
 public class InlineSpriteAssetManager : Singleton<InlineSpriteAssetManager>
 {
     //已加載的Atlas
+    [SerializeField]
     private Dictionary<string,UIAtlas>  mAtlaseMap = new Dictionary<string, UIAtlas>();
 
     //Atlas中 uv信息
+    [SerializeField]
     private Dictionary<string, Dictionary<string, SpriteAssetInfo>> mSpriteUVMap = new Dictionary<string, Dictionary<string, SpriteAssetInfo>>();
 
     protected override void OnInit()
@@ -30,9 +32,16 @@ public class InlineSpriteAssetManager : Singleton<InlineSpriteAssetManager>
     {
         if (true == mAtlaseMap.ContainsKey(assetPath))
         {
-            return mAtlaseMap[assetPath];
+            if (mAtlaseMap[assetPath].GetCount() > 0)
+            {
+                return mAtlaseMap[assetPath];
+            }
+            else
+            {
+                mAtlaseMap.Remove(assetPath);
+                mSpriteUVMap.Remove(assetPath);
+            }
         }
-        
 
         UIAtlas atlas = AtlasManager.Instance.LoadAtlas(assetPath);
         if (atlas == null)
@@ -41,11 +50,11 @@ public class InlineSpriteAssetManager : Singleton<InlineSpriteAssetManager>
             return null;
         }
 
-        mAtlaseMap.Add(assetPath,atlas);
+        mAtlaseMap[assetPath] = atlas;
 
 
         Dictionary<string, SpriteAssetInfo> uvs = GetSpriteUVInfoMap(atlas);
-        mSpriteUVMap.Add(assetPath, uvs);
+        mSpriteUVMap[assetPath] =  uvs;
 
         return atlas;
     }
@@ -74,6 +83,7 @@ public class InlineSpriteAssetManager : Singleton<InlineSpriteAssetManager>
         List<SpriteAssetInfo> temp = GetSpriteInfosFromPrefix(atlasAssetPath, namePrefix);
         if (temp == null)
         {
+            Debug.LogError("____________________GetSpriteNamesFromPrefix ERROR: 获取图片序列失败， name:" + namePrefix);
             return null;
         }
 
@@ -114,11 +124,15 @@ public class InlineSpriteAssetManager : Singleton<InlineSpriteAssetManager>
     {
         if (false == mSpriteUVMap.ContainsKey(atlasAssetPath))
         {
-            Debug.LogError("_______________________GetSpriteUVInfo miss, path:" + atlasAssetPath);
             return null;
         }
         
         Dictionary<string, SpriteAssetInfo> uvs = mSpriteUVMap[atlasAssetPath];
+        if (false == uvs.ContainsKey(spriteName))
+        {
+            return null;
+        }
+
         return uvs[spriteName];
     }
 

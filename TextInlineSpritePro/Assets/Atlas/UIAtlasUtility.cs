@@ -31,6 +31,7 @@ namespace Celf
         public static readonly string[] ConstAtlasPath = new string[]
         {
             "UI/atlas/common",
+            "UI/atlas/battle",
         };
     }
 }

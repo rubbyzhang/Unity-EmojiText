@@ -90,7 +90,12 @@ namespace Celf
         public List<Sprite> GetSpriteList()
         {
             return sprites;
-        } 
+        }
+
+        public int GetCount()
+        {
+            return sprites.Count;
+        }
     }
 
 }

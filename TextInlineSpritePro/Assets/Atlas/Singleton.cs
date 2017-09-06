@@ -9,6 +9,9 @@ namespace Celf
         {
             get
             {
+#if UNITY_EDITOR
+                mInstance = FindObjectOfType<T>();
+#endif
                 if (mInstance == null)
                 {
                     mInstance = new GameObject("(Singleton) " + typeof (T).Name).AddComponent<T>();

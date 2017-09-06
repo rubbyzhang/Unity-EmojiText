@@ -3,9 +3,38 @@ using System.Collections;
 using UnityEditor;
 using System.IO;
 using System.Collections.Generic;
+using System.Reflection;
 
 public static class CreateSpriteAsset
 {
+    [MenuItem("Tools/File Id")]
+    static void GetId()
+    {
+        Object target = Selection.activeObject;
+
+        string guid = GetGuid(target);
+        long loacalId = GetLocalFileID(target);
+
+        Debug.Log("_______________guid:" + guid);
+        Debug.Log("_______________FileID:" + loacalId);
+    }
+
+    static string  GetGuid(UnityEngine.Object target)
+    {
+        string path = AssetDatabase.GetAssetPath(target);
+        string GUID = AssetDatabase.AssetPathToGUID(path);
+        return GUID;
+    }
+
+    private static readonly  PropertyInfo inspectorMode = typeof(SerializedObject).GetProperty("inspectorMode", BindingFlags.NonPublic | BindingFlags.Instance);
+    static long GetLocalFileID(UnityEngine.Object target)
+    {
+        SerializedObject serializedObject = new SerializedObject(target);
+        inspectorMode.SetValue(serializedObject, InspectorMode.Debug, null);
+        SerializedProperty localIdProp = serializedObject.FindProperty("m_LocalIdentfierInFile");
+        return localIdProp.longValue;
+    }
+
     private static  string TargetPath = "Assets/Resources/emoji/";
 
     [MenuItem("Assets/Create/UGUI Sprite Asset",false,10)]
